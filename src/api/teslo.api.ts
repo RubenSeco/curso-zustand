@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useAuthStore } from "../stores";
 
 const tesloApi = axios.create({
 
@@ -11,6 +12,22 @@ const tesloApi = axios.create({
 //TODO: Interceptors
 
 // Leer el store de Zustand
+
+tesloApi.interceptors.request.use(
+  (config) => {
+
+    const token = useAuthStore.getState().token;
+    console.log({ token });
+
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token}`;
+    }
+    return config;
+  }
+
+);
+
+
 
 
 export {
